@@ -7,8 +7,9 @@ const productSchema = new mongoose.Schema({
   },
 
   category: {
-    type: String,
-    required: true
+   type: mongoose.Schema.Types.ObjectId,
+   ref: "Category",
+   required: true
   },
 
   purchaseDate: {
@@ -36,7 +37,13 @@ const productSchema = new mongoose.Schema({
     type: String,
     enum: ["valide", "bientot_expire", "expire"],
     default: "valide"
-  }
+  },
+  
+  user: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  required: true,
+},
 });
 
 const Product = mongoose.model("Product", productSchema);

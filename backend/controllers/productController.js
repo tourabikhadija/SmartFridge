@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ user: req.user.id });
 
     const productsWithStatus = products.map((product) => {
       const today = new Date();
@@ -38,7 +38,10 @@ const getProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!product) {
       return res.status(404).json({
@@ -76,7 +79,10 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const product = await Product.create({ 
+      ...req.body,
+     user: req.user.id,
+    });
 
     const today = new Date();
     const expirationDate = new Date(product.expirationDate);
@@ -108,7 +114,12 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    const product = await Product.findOneAndUpdate({
+      _id: req.params.id,
+    user: req.user.id,
+    }, 
+    req.body,
+      {
       new: true,
       runValidators: true,
     });
@@ -149,7 +160,10 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });

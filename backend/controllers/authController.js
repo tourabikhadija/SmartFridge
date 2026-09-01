@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Notification = require("../models/Notification");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -20,6 +21,15 @@ const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+    });
+
+    // Welcome notification
+    await Notification.create({
+      user: user._id,
+      message:
+        "Bienvenue dans SmartFridge ! Ajoutez vos premiers produits pour recevoir des alertes avant leur expiration.",
+      type: "welcome",
+      isRead: false,
     });
 
     res.status(201).json({
@@ -50,11 +60,20 @@ const login = async (req, res) => {
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!isPasswordValid) {
       return res.status(401).json({
         message: "Invalid email or password",
+      });
+    }
+    
+    if (!user.isActive) {
+      return res.status(403).json({
+      message: "Account is deactivated",
       });
     }
 
@@ -86,7 +105,31 @@ const login = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
+  getProfile,
 };
