@@ -1,6 +1,6 @@
 const { z } = require("zod");
 
-// Validation ديال Register
+
 const registerSchema = z.object({
   name: z
     .string()
@@ -20,7 +20,7 @@ const registerSchema = z.object({
     .max(100, "Password is too long"),
 });
 
-// Validation ديال Login
+
 const loginSchema = z.object({
   email: z
     .string()
@@ -33,7 +33,16 @@ const loginSchema = z.object({
     .min(1, "Password is required"),
 });
 
+const updateProfileSchema = z.object({
+  name: z.string().min(2, "Name must contain at least 2 characters").optional(),
+
+  email: z.string().email("Invalid email").optional(),
+
+  password: z.string().min(6, "Password must contain at least 6 characters").optional(),
+});
+
 module.exports = {
   registerSchema,
   loginSchema,
+  updateProfileSchema,
 };

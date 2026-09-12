@@ -128,6 +128,71 @@ const getProfile = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // Change email → current password required
+    if (email && email !== user.email) {
+      if (!password) {
+        return res.status(400).json({
+          message: "Password is required to change email",
+        });
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        user.password
+      );
+
+      if (!isPasswordValid) {
+        return res.status(401).json({
+          message: "Incorrect password",
+        });
+      }
+
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser) {
+        return res.status(400).json({
+          message: "Email already exists",
+        });
+      }
+
+      user.email = email;
+    }
+
+    // Change name
+    if (name) {
+      user.name = name;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 const logout = async (req, res) => {
   try {
     res.status(200).json({
@@ -145,4 +210,5 @@ module.exports = {
   login,
   getProfile,
   logout,
+  updateProfile,
 };
