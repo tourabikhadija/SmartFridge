@@ -175,10 +175,53 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const consumeProduct = async (req, res) => {
+  try {
+    const { quantity } = req.body;
+
+    const product = await Product.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    if (quantity <= 0) {
+      return res.status(400).json({
+        message: "Quantity must be greater than 0",
+      });
+    }
+
+    if (quantity > product.quantity) {
+      return res.status(400).json({
+        message: "Quantity to consume is greater than available quantity",
+      });
+    }
+
+    product.quantity -= quantity;
+
+    await product.save();
+
+    res.status(200).json({
+      message: "Product quantity updated successfully",
+      product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  consumeProduct,
 };

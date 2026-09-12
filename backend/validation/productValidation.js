@@ -30,6 +30,10 @@ const productSchema = z.object({
   quantity: z
     .number()
     .min(1, "Quantity must be at least 1"),
+  
+  unit: z
+  .enum(["piece", "kg", "g", "l", "ml"]),
+
 });
 
 module.exports = {

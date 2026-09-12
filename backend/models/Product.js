@@ -33,6 +33,12 @@ const productSchema = new mongoose.Schema({
     required: true
   },
 
+  unit: {
+    type: String,
+    enum: ["piece", "kg", "g", "l", "ml"],
+    default: "piece"
+  },
+
   status: {
     type: String,
     enum: ["valide", "bientot_expire", "expire"],
