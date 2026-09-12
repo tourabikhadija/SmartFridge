@@ -6,7 +6,6 @@ const Notification = require("../models/Notification");
 const checkExpiringProducts = async () => {
   try {
     const products = await Product.find();
-
     const today = new Date();
 
     for (const product of products) {
@@ -18,8 +17,19 @@ const checkExpiringProducts = async () => {
         difference / (1000 * 60 * 60 * 24)
       );
 
+      // Mise à jour du status du produit
+      if (daysLeft < 0) {
+        product.status = "expire";
+      } else if (daysLeft <= product.expirationAlertDays) {
+        product.status = "bientot_expire";
+      } else {
+        product.status = "valide";
+      }
+
+      await product.save();
+
       // Produit expiré
-      if (daysLeft <= 0) {
+      if (daysLeft < 0) {
         await createNotification(
           product,
           "expire",
@@ -68,7 +78,7 @@ const createNotification = async (product, type, message) => {
   }
 
   // نشوفو واش دازت ساعة
- const oneHour = 60 * 60 * 1000;
+  const oneHour = 60 * 60 * 1000;
   const timePassed = new Date() - notification.lastSentAt;
 
   if (timePassed >= oneHour) {

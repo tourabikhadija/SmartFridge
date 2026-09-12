@@ -33,7 +33,10 @@ const productSchema = z.object({
   
   unit: z
   .enum(["piece", "kg", "g", "l", "ml"]),
-
+  
+  price: z
+  .number()
+  .min(0, "Price cannot be negative"),
 });
 
 module.exports = {

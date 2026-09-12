@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const Consumption = require("../models/Consumption");
 
 const getProducts = async (req, res) => {
   try {
@@ -81,6 +82,7 @@ const createProduct = async (req, res) => {
   try {
     const product = await Product.create({ 
       ...req.body,
+    initialQuantity: req.body.quantity,
      user: req.user.id,
     });
 
@@ -202,13 +204,32 @@ const consumeProduct = async (req, res) => {
       });
     }
 
+    // Calculer le prix d'une unité
+    const pricePerUnit = product.price / product.initialQuantity;
+
+    // Calculer la valeur consommée
+    const amount = pricePerUnit * quantity;
+
+    // Diminuer la quantité disponible
     product.quantity -= quantity;
 
     await product.save();
 
+    // Enregistrer la consommation
+    await Consumption.create({
+      product: product._id,
+      user: req.user.id,
+      quantity,
+      amount,
+    });
+
     res.status(200).json({
-      message: "Product quantity updated successfully",
+      message: "Product consumed successfully",
       product,
+      consumption: {
+        quantity,
+        amount,
+      },
     });
   } catch (error) {
     res.status(500).json({

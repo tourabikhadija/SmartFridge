@@ -14,7 +14,7 @@ router.post("/login", validate(loginSchema), login);
 
 router.get("/profile", authMiddleware, getProfile);
 
-router.put("/profile", authMiddleware, updateProfile );
+router.put("/profile",authMiddleware, updateProfile );
 
 router.post("/logout", authMiddleware, logout);
 

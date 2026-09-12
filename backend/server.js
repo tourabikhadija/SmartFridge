@@ -7,6 +7,8 @@ const productRoutes = require("./routes/productRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const consumptionRoutes = require("./routes/consumptionRoutes");
+const lossRoutes = require("./routes/lossRoutes");
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/consumptions", consumptionRoutes);
+app.use("/api/losses", lossRoutes);
 
 connectDB();
 

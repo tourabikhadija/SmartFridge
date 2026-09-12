@@ -33,11 +33,24 @@ const productSchema = new mongoose.Schema({
     required: true
   },
 
+  initialQuantity: {
+  type: Number,
+  required: true,
+  min: 1,
+},
+
   unit: {
     type: String,
     enum: ["piece", "kg", "g", "l", "ml"],
     default: "piece"
   },
+
+  price: {
+   type: Number,
+   required: true,
+   min: 0,
+  },
+
 
   status: {
     type: String,
