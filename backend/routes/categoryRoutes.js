@@ -22,7 +22,6 @@ router.post(
 router.get(
   "/",
   authMiddleware,
-  adminMiddleware,
   getCategories
 );
 

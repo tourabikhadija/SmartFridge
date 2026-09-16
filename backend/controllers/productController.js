@@ -5,15 +5,20 @@ const Category = require("../models/Category");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ user: req.user.id });
+    const products = await Product.find({
+      user: req.user.id,
+    }).populate("category", "name");
 
     const productsWithStatus = products.map((product) => {
       const today = new Date();
+
       const expirationDate = new Date(product.expirationDate);
 
       const timeDifference = expirationDate - today;
 
-      const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      const daysRemaining = Math.ceil(
+        timeDifference / (1000 * 60 * 60 * 24)
+      );
 
       let productStatus;
 
@@ -39,12 +44,13 @@ const getProducts = async (req, res) => {
   }
 };
 
+
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findOne({
       _id: req.params.id,
       user: req.user.id,
-    });
+    }).populate("category", "name");
 
     if (!product) {
       return res.status(404).json({
@@ -53,11 +59,14 @@ const getProductById = async (req, res) => {
     }
 
     const today = new Date();
+
     const expirationDate = new Date(product.expirationDate);
 
     const timeDifference = expirationDate - today;
 
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    const daysRemaining = Math.ceil(
+      timeDifference / (1000 * 60 * 60 * 24)
+    );
 
     let productStatus;
 
