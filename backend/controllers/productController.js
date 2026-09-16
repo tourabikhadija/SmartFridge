@@ -1,5 +1,7 @@
 const Product = require("../models/Product");
 const Consumption = require("../models/Consumption");
+const { getProductByBarcode } = require("../services/openFoodFactsService");
+const Category = require("../models/Category");
 
 const getProducts = async (req, res) => {
   try {
@@ -238,6 +240,29 @@ const consumeProduct = async (req, res) => {
   }
 };
 
+
+const getProductByBarcodeController = async (req, res) => {
+  try {
+    const { barcode } = req.params;
+
+    const product = await getProductByBarcode(barcode);
+
+    console.log("PRODUCT FROM SERVICE:", product);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
@@ -245,4 +270,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   consumeProduct,
+  getProductByBarcodeController,
 };
