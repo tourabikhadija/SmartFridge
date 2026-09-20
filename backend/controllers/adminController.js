@@ -3,7 +3,7 @@ const Product = require("../models/Product");
 
 const getStatistics = async (req, res) => {
   try {
-    const activeUsers = await User.countDocuments();
+    const totalUsers = await User.countDocuments();
 
     const totalProducts = await Product.countDocuments();
 
@@ -14,7 +14,7 @@ const getStatistics = async (req, res) => {
       .sort({ expirationDate: 1 });
 
     res.status(200).json({
-      activeUsers,
+      totalUsers,
       totalProducts,
       expiredProducts,
     });
