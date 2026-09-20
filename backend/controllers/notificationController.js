@@ -4,9 +4,24 @@ const Product = require("../models/Product");
 // Get notifications for the logged-in user
 const getNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find({
+    const { date } = req.query;
+
+    const filter = {
       user: req.user.id,
-    })
+    };
+
+    // Filtrer par jour si une date est envoyée
+    if (date) {
+      const startDate = new Date(`${date}T00:00:00.000Z`);
+      const endDate = new Date(`${date}T23:59:59.999Z`);
+
+      filter.createdAt = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+    }
+
+    const notifications = await Notification.find(filter)
       .populate("product", "name expirationDate")
       .sort({ createdAt: -1 });
 
@@ -17,6 +32,7 @@ const getNotifications = async (req, res) => {
     });
   }
 };
+
 const markAsRead = async (req, res) => {
   try {
     const notification = await Notification.findOneAndUpdate(

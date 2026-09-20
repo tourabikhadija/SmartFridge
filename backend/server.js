@@ -1,9 +1,7 @@
 require("dotenv").config();
 
-
 const express = require("express");
 const cors = require("cors");
-
 const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
@@ -13,6 +11,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const consumptionRoutes = require("./routes/consumptionRoutes");
 const lossRoutes = require("./routes/lossRoutes");
+const {checkExpiringProducts,} = require("./jobs/expirationNotification");
 
 const app = express();
 
@@ -33,11 +32,13 @@ app.use("/api/losses", lossRoutes);
 
 connectDB();
 
-// Notification automatique
-require("./jobs/expirationNotification");
-
 const PORT = 3001;
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(
+    `Server running on http://localhost:${PORT}`
+  );
+
+  // Vérifier les notifications au démarrage
+  checkExpiringProducts();
 });

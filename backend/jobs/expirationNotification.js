@@ -1,104 +1,126 @@
+
 const cron = require("node-cron");
 
 const Product = require("../models/Product");
 const Notification = require("../models/Notification");
 
 const checkExpiringProducts = async () => {
+  console.log("CHECK EXPIRATION FUNCTION RUNNING");
+
   try {
     const products = await Product.find();
     const today = new Date();
 
     for (const product of products) {
+      // Produit consommé بالكامل
+      if (product.quantity <= 0) {
+        continue;
+      }
+
       const expirationDate = new Date(product.expirationDate);
 
-      const difference = expirationDate - today;
+      const timeDifference = expirationDate - today;
 
-      const daysLeft = Math.ceil(
-        difference / (1000 * 60 * 60 * 24)
+      const daysRemaining = Math.ceil(
+        timeDifference / (1000 * 60 * 60 * 24)
       );
 
-      // Mise à jour du status du produit
-      if (daysLeft < 0) {
-        product.status = "expire";
-      } else if (daysLeft <= product.expirationAlertDays) {
-        product.status = "bientot_expire";
-      } else {
-        product.status = "valide";
+      // =================================
+      // PRODUIT BIENTÔT EXPIRÉ
+      // =================================
+
+      if (
+        daysRemaining >= 0 &&
+        daysRemaining <= product.expirationAlertDays
+      ) {
+        const notification = await Notification.findOne({
+          user: product.user,
+          product: product._id,
+          type: "bientot_expire",
+        }).sort({ createdAt: -1 });
+
+        // Première notification
+        if (!notification) {
+          await Notification.create({
+            user: product.user,
+            product: product._id,
+            type: "bientot_expire",
+            message:
+              `${product.name} expire dans ` +
+              `${daysRemaining} jour(s).`,
+            isRead: false,
+            lastSentAt: today,
+          });
+
+          continue;
+        }
+
+        // User a déjà lu la notification
+        // On arrête définitivement les rappels
+        if (notification.isRead) {
+          continue;
+        }
+
+        // Vérifier le temps depuis la dernière notification
+        const lastSentAt = new Date(notification.lastSentAt);
+
+        const hoursPassed =
+          (today - lastSentAt) / (1000 * 60 * 60);
+
+        // Après 24 heures :
+        // on UPDATE la même notification
+        if (hoursPassed >= 24) {
+          notification.message =
+            `${product.name} expire dans ` +
+            `${daysRemaining} jour(s).`;
+
+          notification.lastSentAt = today;
+
+          await notification.save();
+        }
       }
 
-      await product.save();
+      // =================================
+      // PRODUIT EXPIRÉ
+      // =================================
 
-      // Produit expiré
-      if (daysLeft < 0) {
-        await createNotification(
-          product,
-          "expire",
-          `${product.name} est expiré.`
-        );
-      }
+      else if (daysRemaining < 0) {
+        const notification = await Notification.findOne({
+          user: product.user,
+          product: product._id,
+          type: "expire",
+        });
 
-      // Produit bientôt expiré
-      else if (daysLeft <= product.expirationAlertDays) {
-        await createNotification(
-          product,
-          "bientot_expire",
-          `${product.name} expire dans ${daysLeft} jour(s).`
-        );
+        // Notification expirée une seule fois
+        if (!notification) {
+          await Notification.create({
+            user: product.user,
+            product: product._id,
+            type: "expire",
+            message: `${product.name} est expiré.`,
+            isRead: false,
+            lastSentAt: today,
+          });
+        }
       }
     }
+
+    console.log(
+      "Vérification des notifications terminée."
+    );
   } catch (error) {
-    console.error(error);
+    console.error(
+      "Erreur lors de la vérification des notifications :",
+      error.message
+    );
   }
 };
 
-const createNotification = async (product, type, message) => {
-  const notification = await Notification.findOne({
-    product: product._id,
-    type: type,
-  });
-
-  // ما عندناش notification من قبل
-  if (!notification) {
-    await Notification.create({
-      user: product.user,
-      product: product._id,
-      message: message,
-      type: type,
-      isRead: false,
-      lastSentAt: new Date(),
-    });
-
-    console.log(`Notification créée pour ${product.name}`);
-    return;
-  }
-
-  // إلا user قرا notification، ما نعاودوش نرسل
-  if (notification.isRead) {
-    return;
-  }
-
-  // نشوفو واش دازت ساعة
-  const oneHour = 60 * 60 * 1000;
-  const timePassed = new Date() - notification.lastSentAt;
-
-  if (timePassed >= oneHour) {
-    await Notification.create({
-      user: product.user,
-      product: product._id,
-      message: message,
-      type: type,
-      isRead: false,
-      lastSentAt: new Date(),
-    });
-
-    console.log(`Notification répétée pour ${product.name}`);
-  }
-};
-
-// Test : كل دقيقة
-cron.schedule("* * * * *", () => {
-  console.log("Vérification des produits...");
+// Vérifier une fois par jour à 00:00
+cron.schedule("0 0 * * *", () => {
   checkExpiringProducts();
 });
 
-module.exports = checkExpiringProducts;
+module.exports = {
+  checkExpiringProducts,
+};
