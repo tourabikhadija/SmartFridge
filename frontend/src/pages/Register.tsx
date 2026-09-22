@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { registerUser } from "../services/authService";
+import "../styles/Login.css";
+import roctLogo from "../assets/ROCT.png";
 
 function Register() {
   const [name, setName] = useState("");
@@ -64,62 +67,101 @@ function Register() {
 };
 
   return (
-    <div>
-      <h1>Créer un compte</h1>
+    <div className="login-page">
+      <div className="login-card">
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Nom</label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Votre nom"
-          />
-        </div>
+        <img
+          src={roctLogo}
+          alt="ROCT logo"
+          className="login-logo"
+        />
 
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="votre@email.com"
-          />
-        </div>
+        <h2 className="Parte-Welcome">
+          Create Account
+        </h2>
 
-        <div>
-          <label htmlFor="password">Mot de passe</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Minimum 6 caractères"
-          />
-        </div>
+        <p className="login-subtitle">
+          Create your ROCT account
+        </p>
 
-        <div>
-          <label htmlFor="confirmPassword">
-            Confirmer le mot de passe
-          </label>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Nom</label>
 
-          <input
-            id="confirmPassword"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirmez votre mot de passe"
-          />
-        </div>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+            />
+          </div>
 
-        {error && <p>{error}</p>}
-        {success && <p>{success}</p>}
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
 
-        <button type="submit">Créer mon compte</button>
-      </form>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email adress"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">
+              Mot de passe
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              placeholder="Password"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">
+              Confirmer le mot de passe
+            </label>
+
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) =>
+                setConfirmPassword(e.target.value)
+              }
+              placeholder="Confirm Password"
+            />
+          </div>
+
+          {error && (
+            <p className="error-message">{error}</p>
+          )}
+
+          {success && (
+            <p className="success-message">
+              {success}
+            </p>
+          )}
+
+          <button className="login-button" type="submit">
+            Create Account
+          </button>
+        </form>
+
+        <p className="auth-switch">
+          Vous avez déjà un compte ?{" "}
+          <Link to="/login">Se connecter</Link>
+        </p>
+
+      </div>
     </div>
   );
 }

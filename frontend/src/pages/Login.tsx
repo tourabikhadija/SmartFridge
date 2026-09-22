@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
@@ -87,6 +88,11 @@ return (
         </button>
 
       </form>
+
+      <p className="auth-switch">
+        Vous n'avez pas encore de compte ?{" "}
+        <Link to="/register">Créer un compte</Link>
+      </p>
 
     </div>
   </div>

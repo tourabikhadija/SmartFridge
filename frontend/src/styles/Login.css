@@ -98,6 +98,34 @@ body {
   margin-top: 0;
 }
 
+/* Subtitle (Register) */
+.login-subtitle {
+  margin: 4px 0 32px;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  color: rgba(235, 240, 255, 0.65);
+}
+
+/* Switch link between Login / Register */
+.auth-switch {
+  margin-top: 22px;
+  font-family: system-ui, sans-serif;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: #2de8e5;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.auth-switch a:hover {
+  color: #3effc0;
+}
+
 /* Logo mark */
 .login-card h1 {
   margin: 0 auto 8px;
