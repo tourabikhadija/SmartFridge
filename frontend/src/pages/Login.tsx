@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import "../styles/Login.css";
+import roctLogo from "../assets/ROCT.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -45,44 +47,50 @@ function Login() {
   }
 };
 
-  return (
-    <div>
-      <h1>Connexion</h1>
+return (
+  <div className="login-page">
+    <div className="login-card">
+
+     <img src={roctLogo} alt="ROCT logo" className="login-logo" />      
+      <h2 className="Parte-Welcome">Welcome Back</h2>
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
 
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="votre@email.com"
+            placeholder="Email adress"
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Mot de passe</label>
-
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Votre mot de passe"
+            placeholder="Password"
           />
         </div>
 
-        {error && <p>{error}</p>}
-        {success && <p>{success}</p>}
+        {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">
-          Se connecter
+        {success && <p className="success-message">{success}</p>}
+
+        <button className="login-button" type="submit">
+          Login
         </button>
+
       </form>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default Login;

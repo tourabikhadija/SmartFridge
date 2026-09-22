@@ -6,6 +6,7 @@ import {
   getMonthlyConsumption,
   getMonthlyLoss,
 } from "../services/insightsService";
+import "../styles/Dashboard.css";
 
 // =========================
 // Types
@@ -231,159 +232,176 @@ function Dashboard() {
     }
   );
 
-  // =========================
-  // JSX
-  // =========================
+
 
   return (
-    <div>
-      {/* =========================
-          Header
-      ========================= */}
+  <div className="dashboard">
 
-      <h1>Dashboard</h1>
+    <header className="dashboard-header">
+      <div>
+        <span className="dashboard-label">Here's your fridge Overview</span>
+      </div>
+    </header>
 
-      <p>Bienvenue dans SmartFridge 👋</p>
 
-      {error && <p>{error}</p>}
+    {error && <p className="dashboard-error">{error}</p>}
 
-      {/* =========================
-          Statistics
-      ========================= */}
+    
 
-      <section>
-        <h2>Overview</h2>
+    {/* Statistics */}
+    <section className="dashboard-section">
+      <div className="section-heading">
+        <span>Vue générale</span>
+      </div>
 
-        <div>
+      <div className="stats-grid">
+
+        <div className="stat-card">
+          <div className="stat-icon">📦</div>
           <div>
             <h3>Total Products</h3>
             <p>{totalProducts}</p>
           </div>
+        </div>
 
+        <div className="stat-card valid">
+          <div className="stat-icon">✓</div>
           <div>
             <h3>Valides</h3>
             <p>{validProducts}</p>
           </div>
+        </div>
 
+        <div className="stat-card warning">
+          <div className="stat-icon">◷</div>
           <div>
             <h3>Expiring Soon</h3>
             <p>{expiringSoonProducts}</p>
           </div>
+        </div>
 
+        <div className="stat-card expired">
+          <div className="stat-icon">!</div>
           <div>
             <h3>Expired</h3>
             <p>{expiredProducts}</p>
           </div>
         </div>
-      </section>
 
-      {/* =========================
-          Monthly Insights
-      ========================= */}
-
-      <section>
-        <h2>Monthly Insights</h2>
-
-        <div>
-          <div>
-            <h3>Consumption</h3>
-
-            <p>{monthlyConsumption}</p>
-          </div>
-
-          <div>
-            <h3>Food Waste</h3>
-
-            <p>{monthlyLoss} DH</p>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================
-          Expiring Soon
-      ========================= */}
-
-      <section>
+      </div>
+    </section>
+    
+    <div className="alerts-grid">
+    {/* Expiring Soon */}
+    <section className="dashboard-section alert-section expiring-section">
+      <div className="section-heading">
         <h2>Expiring Soon</h2>
+      </div>
 
-        {expiringSoonList.length === 0 ? (
-          <p>Aucun produit ne va bientôt expirer.</p>
-        ) : (
-          expiringSoonList.map((product) => {
+      {expiringSoonList.length === 0 ? (
+        <p className="empty-message">
+          Aucun produit ne va bientôt expirer.
+        </p>
+      ) : (
+        <ul className="alert-list">
+          {expiringSoonList.map((product) => {
             const daysRemaining =
-              getDaysDifference(
-                product.expirationDate
-              );
+              getDaysDifference(product.expirationDate);
 
             return (
-              <div key={product._id}>
-                <h3>{product.name}</h3>
+              <li className="alert-entry" key={product._id}>
+                <div>
+                  <span className="alert-name">{product.name}</span>
+                  <span className="alert-date">
+                    Expires: {formatDate(product.expirationDate)}
+                  </span>
+                </div>
 
-                <p>
-                  Expires:{" "}
-                  {formatDate(
-                    product.expirationDate
-                  )}
-                </p>
-
-                <p>
+                <span className="days-badge">
                   {daysRemaining} day
-                  {daysRemaining > 1 ? "s" : ""}{" "}
-                  remaining
-                </p>
-              </div>
+                  {daysRemaining > 1 ? "s" : ""} remaining
+                </span>
+              </li>
             );
-          })
-        )}
-      </section>
+          })}
+        </ul>
+      )}
+    </section>
+    
 
-      {/* =========================
-          Expired
-      ========================= */}
-
-      <section>
+    {/* Expired */}
+    <section className="dashboard-section alert-section expired-section">
+      <div className="section-heading">
         <h2>Expired</h2>
+      </div>
 
-        {expiredList.length === 0 ? (
-          <p>Aucun produit expiré.</p>
-        ) : (
-          expiredList.map((product) => {
+      {expiredList.length === 0 ? (
+        <p className="empty-message">
+          Aucun produit expiré.
+        </p>
+      ) : (
+        <ul className="alert-list">
+          {expiredList.map((product) => {
             const daysAgo = Math.abs(
-              getDaysDifference(
-                product.expirationDate
-              )
+              getDaysDifference(product.expirationDate)
             );
 
             return (
-              <div key={product._id}>
-                <h3>{product.name}</h3>
+              <li className="alert-entry" key={product._id}>
+                <div>
+                  <span className="alert-name">{product.name}</span>
+                  <span className="alert-date">
+                    Expired: {formatDate(product.expirationDate)}
+                  </span>
+                </div>
 
-                <p>
-                  Expired:{" "}
-                  {formatDate(
-                    product.expirationDate
-                  )}
-                </p>
-
-                <p>
+                <span className="days-badge">
                   {daysAgo} day
                   {daysAgo > 1 ? "s" : ""} ago
-                </p>
-              </div>
+                </span>
+              </li>
             );
-          })
-        )}
-      </section>
+          })}
+        </ul>
+      )}
+    </section>
+    </div>
 
-      {/* =========================
-          Products
-      ========================= */}
+    {/* Monthly Insights */}
+    <section className="dashboard-section">
+      <div className="section-heading">
+        <h2>Monthly Insights</h2>
+        <span>Ce mois-ci</span>
+      </div>
 
-      <section>
-        <h2>Mes produits</h2>
+      <div className="insights-grid">
 
-        {/* Search */}
+        <div className="insight-card">
+          <span className="insight-label">Consumption</span>
+          <strong>{monthlyConsumption}</strong>
+          <span className="insight-description">
+            produits consommés
+          </span>
+        </div>
 
+        <div className="insight-card">
+          <span className="insight-label">Food Waste</span>
+          <strong>{monthlyLoss} DH</strong>
+          <span className="insight-description">
+            pertes alimentaires
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+    
+
+    
+    {/* Products */}
+    <section className="dashboard-section products-section">
+
+      <div className="search-wrapper">
         <input
           type="text"
           placeholder="Rechercher un produit..."
@@ -392,17 +410,18 @@ function Dashboard() {
             setSearch(event.target.value)
           }
         />
+      </div>
 
-        {/* Categories */}
+      
 
-        <div>
-          <h3>Categories</h3>
+      <div className="categories">
+        <h3>Categories</h3>
 
+        <div className="category-buttons">
           <button
+            className={selectedCategory === "Tous" ? "active" : ""}
             type="button"
-            onClick={() =>
-              setSelectedCategory("Tous")
-            }
+            onClick={() => setSelectedCategory("Tous")}
           >
             Tous
           </button>
@@ -410,6 +429,11 @@ function Dashboard() {
           {categories.map((category) => (
             <button
               key={category._id}
+              className={
+                selectedCategory === category.name
+                  ? "active"
+                  : ""
+              }
               type="button"
               onClick={() =>
                 setSelectedCategory(category.name)
@@ -419,61 +443,63 @@ function Dashboard() {
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Products list */}
+      <div className="products-grid">
+        {filteredProducts.length === 0 ? (
+          <p className="empty-message">
+            Aucun produit trouvé.
+          </p>
+        ) : (
+          filteredProducts.map((product) => (
+            <div className="product-card" key={product._id}>
 
-        <div>
-          {filteredProducts.length === 0 ? (
-            <p>Aucun produit trouvé.</p>
-          ) : (
-            filteredProducts.map((product) => (
-              <div key={product._id}>
+              <div className="product-card-header">
                 <h3>{product.name}</h3>
+                <span className={`status ${product.status}`}>
+                  {product.status}
+                </span>
+              </div>
 
+              <p className="product-category">
+                {product.category.name}
+              </p>
+
+              <div className="product-info">
                 <p>
-                  Catégorie:{" "}
-                  {product.category.name}
+                  <span>Quantité</span>
+                  {product.quantity} {product.unit}
                 </p>
 
                 <p>
-                  Quantité: {product.quantity}{" "}
-                  {product.unit}
+                  <span>Quantité initiale</span>
+                  {product.initialQuantity} {product.unit}
                 </p>
 
                 <p>
-                  Quantité initiale:{" "}
-                  {product.initialQuantity}{" "}
-                  {product.unit}
+                  <span>Date d'achat</span>
+                  {formatDate(product.purchaseDate)}
                 </p>
 
                 <p>
-                  Date d'achat:{" "}
-                  {formatDate(
-                    product.purchaseDate
-                  )}
+                  <span>Date d'expiration</span>
+                  {formatDate(product.expirationDate)}
                 </p>
 
                 <p>
-                  Date d'expiration:{" "}
-                  {formatDate(
-                    product.expirationDate
-                  )}
-                </p>
-
-                <p>
-                  Prix: {product.price} DH
-                </p>
-
-                <p>
-                  Statut: {product.status}
+                  <span>Prix</span>
+                  {product.price} DH
                 </p>
               </div>
-            ))
-          )}
-        </div>
-      </section>
-    </div>
-  );
-}
 
+            </div>
+          ))
+        )}
+      </div>
+
+    </section>
+
+  </div>
+);
+}
 export default Dashboard;

@@ -9,6 +9,8 @@ import {
 } from "../services/productService";
 
 import { getCategories } from "../services/categoryService";
+import "../styles/Dashboard.css";
+import "../styles/Products.css";
 
 type Category = {
   _id: string;
@@ -318,411 +320,361 @@ function Products() {
     });
 
   return (
-    <div>
-      <h1>Mes produits</h1>
+    <div className="dashboard products-page">
+      <header className="dashboard-header">
+        <span className="dashboard-label">SmartFridge</span>
+        <h1>Mes produits</h1>
+        <p>
+          Ajoutez, organisez et suivez les produits de
+          votre réfrigérateur.
+        </p>
+      </header>
 
-      {error && <p>{error}</p>}
+      {error && <p className="dashboard-error">{error}</p>}
 
-      {success && <p>{success}</p>}
+      {success && <p className="dashboard-success">{success}</p>}
 
       {/* ========================= */}
       {/* AJOUTER UN PRODUIT */}
       {/* ========================= */}
 
-      <h2>Ajouter un produit</h2>
-
-      <button
-        type="button"
-        onClick={handleManualMode}
-      >
-        Ajouter manuellement
-      </button>
-
-      <button
-        type="button"
-        onClick={handleScanMode}
-      >
-        Scanner un produit
-      </button>
-
-      <hr />
-
-      {/* ========================= */}
-      {/* SCANNER */}
-      {/* ========================= */}
-
-      {mode === "scan" && (
-        <div>
-          <h3>Scanner un produit</h3>
-
-          {!isScanning && (
-            <button
-              type="button"
-              onClick={startScanner}
-            >
-              Ouvrir la caméra
-            </button>
-          )}
-
-          {isScanning && (
-            <button
-              type="button"
-              onClick={stopScanner}
-            >
-              Arrêter la caméra
-            </button>
-          )}
-
-          <div
-            id="barcode-reader"
-            style={{
-              width: "100%",
-              maxWidth: "500px",
-              marginTop: "20px",
-            }}
-          ></div>
-
-          <p>
-            Placez le code-barres devant
-            la caméra.
-          </p>
-        </div>
-      )}
-
-      {/* ========================= */}
-      {/* FORMULAIRE */}
-      {/* ========================= */}
-
-      <h3>
-        {mode === "scan"
-          ? "Informations du produit"
-          : "Ajouter manuellement"}
-      </h3>
-
-      <form
-        onSubmit={handleAddProduct}
-      >
-        {/* Nom */}
-
-        <div>
-          <label>
-            Nom du produit
-          </label>
-
-          <input
-            type="text"
-            value={name}
-            onChange={(event) =>
-              setName(
-                event.target.value
-              )
-            }
-            placeholder="Ex: Milk"
-            required
-          />
+      <section className="dashboard-section">
+        <div className="section-heading">
+          <h2>Ajouter un produit</h2>
         </div>
 
-        {/* Catégorie */}
+        <div className="products-add-card">
+          <div className="products-add-header">
+            <p>
+              Ajoutez un produit manuellement ou
+              scannez son code-barres.
+            </p>
 
-        <div>
-          <label>
-            Catégorie
-          </label>
+            <div className="category-buttons">
+              <button
+                type="button"
+                className={mode === "manuel" ? "active" : ""}
+                onClick={handleManualMode}
+              >
+                Ajouter manuellement
+              </button>
 
-          <select
-            value={category}
-            onChange={(event) =>
-              setCategory(
-                event.target.value
-              )
-            }
-            required
-          >
-            <option value="">
-              Choisir une catégorie
-            </option>
+              <button
+                type="button"
+                className={mode === "scan" ? "active" : ""}
+                onClick={handleScanMode}
+              >
+                Scanner un produit
+              </button>
+            </div>
+          </div>
 
-            {categories.map(
-              (category) => (
-                <option
-                  key={category._id}
-                  value={category._id}
+          {/* ========================= */}
+          {/* SCANNER */}
+          {/* ========================= */}
+
+          {mode === "scan" && (
+            <div className="products-scanner">
+              <h3>Scanner un produit</h3>
+
+              {!isScanning && (
+                <button
+                  type="button"
+                  className="products-btn products-btn-primary"
+                  onClick={startScanner}
                 >
-                  {category.name}
-                </option>
-              )
-            )}
-          </select>
-        </div>
+                  Ouvrir la caméra
+                </button>
+              )}
 
-        {/* Date achat */}
+              {isScanning && (
+                <button
+                  type="button"
+                  className="products-btn products-btn-danger"
+                  onClick={stopScanner}
+                >
+                  Arrêter la caméra
+                </button>
+              )}
 
-        <div>
-          <label>
-            Date d'achat
-          </label>
+              <div
+                id="barcode-reader"
+                style={{
+                  width: "100%",
+                  maxWidth: "500px",
+                  marginTop: "20px",
+                }}
+              ></div>
 
-          <input
-            type="date"
-            value={purchaseDate}
-            onChange={(event) =>
-              setPurchaseDate(
-                event.target.value
-              )
-            }
-            required
-          />
-        </div>
+              <p className="products-scanner-hint">
+                Placez le code-barres devant la caméra.
+              </p>
+            </div>
+          )}
 
-        {/* Date expiration */}
+          {mode === "scan" && (
+            <hr className="products-divider" />
+          )}
 
-        <div>
-          <label>
-            Date d'expiration
-          </label>
+          {/* ========================= */}
+          {/* FORMULAIRE */}
+          {/* ========================= */}
 
-          <input
-            type="date"
-            value={expirationDate}
-            onChange={(event) =>
-              setExpirationDate(
-                event.target.value
-              )
-            }
-            required
-          />
-        </div>
+          <h3 className="products-form-title">
+            {mode === "scan"
+              ? "Informations du produit"
+              : "Ajouter manuellement"}
+          </h3>
 
-        {/* Alerte */}
+          <form className="products-form" onSubmit={handleAddProduct}>
+            <div className="products-form-grid">
+              {/* Nom */}
+              <div className="products-field">
+                <label>Nom du produit</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) =>
+                    setName(event.target.value)
+                  }
+                  placeholder="Ex: Milk"
+                  required
+                />
+              </div>
 
-        <div>
-          <label>
-            Alerte avant expiration
-            (jours)
-          </label>
+              {/* Catégorie */}
+              <div className="products-field">
+                <label>Catégorie</label>
+                <select
+                  value={category}
+                  onChange={(event) =>
+                    setCategory(event.target.value)
+                  }
+                  required
+                >
+                  <option value="">
+                    Choisir une catégorie
+                  </option>
 
-          <input
-            type="number"
-            min="0"
-            value={
-              expirationAlertDays
-            }
-            onChange={(event) =>
-              setExpirationAlertDays(
-                Number(
-                  event.target.value
-                )
-              )
-            }
-            required
-          />
-        </div>
+                  {categories.map((category) => (
+                    <option
+                      key={category._id}
+                      value={category._id}
+                    >
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        {/* Quantité */}
+              {/* Date achat */}
+              <div className="products-field">
+                <label>Date d'achat</label>
+                <input
+                  type="date"
+                  value={purchaseDate}
+                  onChange={(event) =>
+                    setPurchaseDate(event.target.value)
+                  }
+                  required
+                />
+              </div>
 
-        <div>
-          <label>
-            Quantité
-          </label>
+              {/* Date expiration */}
+              <div className="products-field">
+                <label>Date d'expiration</label>
+                <input
+                  type="date"
+                  value={expirationDate}
+                  onChange={(event) =>
+                    setExpirationDate(event.target.value)
+                  }
+                  required
+                />
+              </div>
 
-          <input
-            type="number"
-            min="1"
-            value={quantity}
-            onChange={(event) =>
-              setQuantity(
-                Number(
-                  event.target.value
-                )
-              )
-            }
-            required
-          />
-        </div>
+              {/* Alerte */}
+              <div className="products-field">
+                <label>
+                  Alerte avant expiration (jours)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={expirationAlertDays}
+                  onChange={(event) =>
+                    setExpirationAlertDays(
+                      Number(event.target.value)
+                    )
+                  }
+                  required
+                />
+              </div>
 
-        {/* Unité */}
+              {/* Quantité */}
+              <div className="products-field">
+                <label>Quantité</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={quantity}
+                  onChange={(event) =>
+                    setQuantity(
+                      Number(event.target.value)
+                    )
+                  }
+                  required
+                />
+              </div>
 
-        <div>
-          <label>
-            Unité
-          </label>
+              {/* Unité */}
+              <div className="products-field">
+                <label>Unité</label>
+                <select
+                  value={unit}
+                  onChange={(event) =>
+                    setUnit(event.target.value)
+                  }
+                >
+                  <option value="piece">Pièce</option>
+                  <option value="kg">Kg</option>
+                  <option value="g">g</option>
+                  <option value="l">L</option>
+                  <option value="ml">ml</option>
+                </select>
+              </div>
 
-          <select
-            value={unit}
-            onChange={(event) =>
-              setUnit(
-                event.target.value
-              )
-            }
-          >
-            <option value="piece">
-              Pièce
-            </option>
+              {/* Prix */}
+              <div className="products-field">
+                <label>Prix (DH)</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={price}
+                  onChange={(event) =>
+                    setPrice(
+                      Number(event.target.value)
+                    )
+                  }
+                  required
+                />
+              </div>
+            </div>
 
-            <option value="kg">
-              Kg
-            </option>
-
-            <option value="g">
-              g
-            </option>
-
-            <option value="l">
-              L
-            </option>
-
-            <option value="ml">
-              ml
-            </option>
-          </select>
-        </div>
-
-        {/* Prix */}
-
-        <div>
-          <label>
-            Prix (DH)
-          </label>
-
-          <input
-            type="number"
-            min="0"
-            value={price}
-            onChange={(event) =>
-              setPrice(
-                Number(
-                  event.target.value
-                )
-              )
-            }
-            required
-          />
-        </div>
-
-        <button type="submit">
-          Ajouter le produit
-        </button>
-      </form>
-
-      <hr />
-
-      {/* ========================= */}
-      {/* RECHERCHE */}
-      {/* ========================= */}
-
-      <h2>
-        Liste des produits
-      </h2>
-
-      <input
-        type="text"
-        value={search}
-        onChange={(event) =>
-          setSearch(
-            event.target.value
-          )
-        }
-        placeholder="Rechercher un produit..."
-      />
-
-      <select
-        value={selectedCategory}
-        onChange={(event) =>
-          setSelectedCategory(
-            event.target.value
-          )
-        }
-      >
-        <option value="">
-          Toutes les catégories
-        </option>
-
-        {categories.map(
-          (category) => (
-            <option
-              key={category._id}
-              value={category._id}
+            <button
+              type="submit"
+              className="products-btn products-btn-primary products-submit"
             >
-              {category.name}
-            </option>
-          )
-        )}
-      </select>
-
-      <hr />
+              Ajouter le produit
+            </button>
+          </form>
+        </div>
+      </section>
 
       {/* ========================= */}
       {/* LISTE DES PRODUITS */}
       {/* ========================= */}
 
-      {filteredProducts.length ===
-      0 ? (
-        <p>
-          Aucun produit trouvé.
-        </p>
-      ) : (
-        filteredProducts.map(
-          (product) => (
-            <div
-              key={product._id}
-            >
-              <h3>
-                {product.name}
-              </h3>
+      <section className="dashboard-section products-section">
+        <div className="section-heading">
+          <h2>Liste des produits</h2>
+          <span>{filteredProducts.length} produits</span>
+        </div>
 
-              <p>
-                Catégorie :{" "}
-                {
-                  product.category
-                    .name
-                }
-              </p>
+        <div className="search-wrapper">
+          <input
+            type="text"
+            value={search}
+            onChange={(event) =>
+              setSearch(event.target.value)
+            }
+            placeholder="Rechercher un produit..."
+          />
+        </div>
 
-              <p>
-                Quantité :{" "}
-                {product.quantity}{" "}
-                {product.unit}
-              </p>
+        <div className="categories products-filter">
+          <h3>Catégories</h3>
 
-              <p>
-                Prix :{" "}
-                {product.price} DH
-              </p>
+          <select
+            className="products-filter-select"
+            value={selectedCategory}
+            onChange={(event) =>
+              setSelectedCategory(
+                event.target.value
+              )
+            }
+          >
+            <option value="">
+              Toutes les catégories
+            </option>
 
-              <p>
-                Date d'achat :{" "}
-                {new Date(
-                  product.purchaseDate
-                ).toLocaleDateString(
-                  "fr-FR"
-                )}
-              </p>
-
-              <p>
-                Date d'expiration :{" "}
-                {new Date(
-                  product.expirationDate
-                ).toLocaleDateString(
-                  "fr-FR"
-                )}
-              </p>
-
-              <p>
-                Statut :{" "}
-                {product.status}
-              </p>
-
-              <Link
-                to={`/products/${product._id}`}
+            {categories.map((category) => (
+              <option
+                key={category._id}
+                value={category._id}
               >
-                Voir les détails
-              </Link>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-              <hr />
-            </div>
-          )
-        )
-      )}
+        {filteredProducts.length === 0 ? (
+          <p className="empty-message">
+            Aucun produit trouvé.
+          </p>
+        ) : (
+          <div className="products-grid">
+            {filteredProducts.map((product) => (
+              <div className="product-card" key={product._id}>
+                <div className="product-card-header">
+                  <h3>{product.name}</h3>
+                  <span className={`status ${product.status}`}>
+                    {product.status}
+                  </span>
+                </div>
+
+                <p className="product-category">
+                  {product.category.name}
+                </p>
+
+                <div className="product-info">
+                  <p>
+                    <span>Quantité</span>
+                    {product.quantity} {product.unit}
+                  </p>
+
+                  <p>
+                    <span>Prix</span>
+                    {product.price} DH
+                  </p>
+
+                  <p>
+                    <span>Date d'achat</span>
+                    {new Date(
+                      product.purchaseDate
+                    ).toLocaleDateString("fr-FR")}
+                  </p>
+
+                  <p>
+                    <span>Date d'expiration</span>
+                    {new Date(
+                      product.expirationDate
+                    ).toLocaleDateString("fr-FR")}
+                  </p>
+                </div>
+
+                <Link
+                  className="products-details-link"
+                  to={`/products/${product._id}`}
+                >
+                  Voir les détails
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

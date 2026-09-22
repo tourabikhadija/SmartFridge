@@ -21,6 +21,9 @@ import {
 } from "../services/categoryService";
 
 import type { Category } from "../services/categoryService";
+import "../styles/Dashboard.css";
+import "../styles/Products.css";
+import "../styles/Profile.css";
 
 function Profile() {
   const navigate = useNavigate();
@@ -288,237 +291,387 @@ function Profile() {
   );
 
   return (
-    <div>
-      <h1>My Profile</h1>
+    <div className="dashboard profile-page">
+      <div className="profile-container">
+        <header className="dashboard-header">
+          <span className="dashboard-label">
+            ROCT
+          </span>
 
-      {error && <p>{error}</p>}
-
-      {message && <p>{message}</p>}
-
-      {/* Profile */}
-      <form onSubmit={handleUpdate}>
-        <div>
-          <label htmlFor="name">Name</label>
-
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(event) =>
-              setName(event.target.value)
-            }
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email">Email</label>
-
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) =>
-              setEmail(event.target.value)
-            }
-          />
-        </div>
-
-        <div>
-          <label htmlFor="role">Role</label>
-
-          <input
-            id="role"
-            type="text"
-            value={role}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password">
-            Current password
-          </label>
-
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) =>
-              setPassword(event.target.value)
-            }
-            placeholder="Required to change email"
-          />
-        </div>
-
-        <button type="submit">
-          Save changes
-        </button>
-      </form>
-
-      <br />
-
-      {/* Admin */}
-      {role === "admin" && (
-        <div>
-          <hr />
-
-          <h2>Administration</h2>
-
-          {/* Statistics */}
-          <h3>Statistics</h3>
+          <h1>Mon profil</h1>
 
           <p>
-            Registered users: {totalUsers}
+            Gérez vos informations personnelles
           </p>
+        </header>
 
-          <p>
-            Registered products: {totalProducts}
+        {error && (
+          <p className="dashboard-error">{error}</p>
+        )}
+
+        {message && (
+          <p className="dashboard-success">
+            {message}
           </p>
+        )}
 
-          {/* Expired products */}
-          <h3>Expired products</h3>
+        {/* Carte de profil */}
+        <section className="dashboard-section">
+          <div className="profile-card">
+            <div className="profile-avatar">👤</div>
 
-          {expiredProducts.length === 0 ? (
-            <p>No expired products.</p>
-          ) : (
-            expiredProducts.map((product) => (
-              <div key={product._id}>
-                <p>
-                  <strong>{product.name}</strong>
-                </p>
+            <h2>{name}</h2>
 
-                <p>
-                  Expiration date:{" "}
-                  {new Date(
-                    product.expirationDate
-                  ).toLocaleDateString("fr-FR")}
-                </p>
+            <p>{email}</p>
 
-                <p>
-                  Quantity: {product.quantity}
-                </p>
+            <span className="profile-role-badge">
+              {role}
+            </span>
+          </div>
+        </section>
 
-                <hr />
-              </div>
-            ))
-          )}
-
-          {/* Users */}
-          <h3>User management</h3>
-
-          {users.length === 0 ? (
-            <p>No users.</p>
-          ) : (
-            users.map((user) => (
-              <div key={user._id}>
-                <p>
-                  <strong>{user.name}</strong>
-                </p>
-
-                <p>{user.email}</p>
-
-                <p>
-                  Role: {user.role}
-                </p>
-
-                <p>
-                  Status:{" "}
-                  {user.isActive
-                    ? "Active"
-                    : "Disabled"}
-                </p>
-
-                <button
-                  onClick={() =>
-                    handleToggleUser(user._id)
-                  }
-                >
-                  {user.isActive
-                    ? "Disable"
-                    : "Enable"}
-                </button>
-
-                <hr />
-              </div>
-            ))
-          )}
-
-          {/* Categories */}
-          <h3>Category management</h3>
-
-          <div>
-            <input
-              type="text"
-              value={searchCategory}
-              onChange={(event) =>
-                setSearchCategory(
-                  event.target.value
-                )
-              }
-              placeholder="Search category"
-            />
+        {/* Blocs d'informations */}
+        <section className="dashboard-section">
+          <div className="section-heading">
+            <h2>Mes informations</h2>
           </div>
 
-          <br />
+          <div className="profile-info-grid">
+            <div className="profile-info-block">
+              <span className="profile-info-label">
+                Nom
+              </span>
 
-          <div>
-            <input
-              type="text"
-              value={categoryName}
-              onChange={(event) =>
-                setCategoryName(
-                  event.target.value
-                )
-              }
-              placeholder="Category name"
-            />
+              <strong>{name}</strong>
+            </div>
 
-            <button onClick={handleAddCategory}>
-              Add category
+            <div className="profile-info-block">
+              <span className="profile-info-label">
+                Email
+              </span>
+
+              <strong>{email}</strong>
+            </div>
+
+            <div className="profile-info-block">
+              <span className="profile-info-label">
+                Rôle
+              </span>
+
+              <strong>{role}</strong>
+            </div>
+          </div>
+        </section>
+
+        {/* Formulaire de modification */}
+        <section className="dashboard-section">
+          <div className="section-heading">
+            <h2>Modifier mes informations</h2>
+          </div>
+
+          <form
+            className="profile-edit-card"
+            onSubmit={handleUpdate}
+          >
+            <div className="profile-edit-grid">
+              <div className="products-field">
+                <label htmlFor="name">Nom</label>
+
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(event) =>
+                    setName(event.target.value)
+                  }
+                />
+              </div>
+
+              <div className="products-field">
+                <label htmlFor="email">Email</label>
+
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(event) =>
+                    setEmail(event.target.value)
+                  }
+                />
+              </div>
+
+              <div className="products-field">
+                <label htmlFor="role">Rôle</label>
+
+                <input
+                  id="role"
+                  type="text"
+                  value={role}
+                  disabled
+                />
+              </div>
+
+              <div className="products-field">
+                <label htmlFor="password">
+                  Mot de passe actuel
+                </label>
+
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(event) =>
+                    setPassword(event.target.value)
+                  }
+                  placeholder="Requis pour changer l'email"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="products-btn products-btn-primary"
+            >
+              Enregistrer les modifications
             </button>
-          </div>
+          </form>
+        </section>
 
-          <br />
+        {/* Administration */}
+        {role === "admin" && (
+          <section className="dashboard-section">
+            <div className="section-heading">
+              <h2>Administration</h2>
+            </div>
 
-          {filteredCategories.length === 0 ? (
-            <p>No category found.</p>
-          ) : (
-            filteredCategories.map((category) => (
-              <div key={category._id}>
-                <strong>{category.name}</strong>
+            {/* Statistiques */}
+            <div className="profile-admin-grid">
+              <div className="profile-stat-card">
+                <span className="profile-stat-icon">
+                  👥
+                </span>
 
-                <button
-                  onClick={() =>
-                    handleEditCategory(
-                      category._id,
-                      category.name
-                    )
-                  }
-                >
-                  Edit
-                </button>
+                <div>
+                  <h3>Utilisateurs inscrits</h3>
 
-                <button
-                  onClick={() =>
-                    handleDeleteCategory(
-                      category._id
-                    )
-                  }
-                >
-                  Delete
-                </button>
-
-                <hr />
+                  <p>{totalUsers}</p>
+                </div>
               </div>
-            ))
-          )}
-        </div>
-      )}
 
-      {/* Logout */}
-      <button onClick={handleLogout}>
-        Logout
-      </button>
+              <div className="profile-stat-card">
+                <span className="profile-stat-icon">
+                  📦
+                </span>
+
+                <div>
+                  <h3>Produits enregistrés</h3>
+
+                  <p>{totalProducts}</p>
+                </div>
+              </div>
+
+              <div className="profile-stat-card">
+                <span className="profile-stat-icon">
+                  ⚠️
+                </span>
+
+                <div>
+                  <h3>Produits expirés</h3>
+
+                  <p>{expiredProducts.length}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Produits expirés */}
+            <div className="section-heading profile-subheading">
+              <h3>Produits expirés</h3>
+            </div>
+
+            {expiredProducts.length === 0 ? (
+              <p className="empty-message">
+                Aucun produit expiré.
+              </p>
+            ) : (
+              <div className="profile-list">
+                {expiredProducts.map((product) => (
+                  <div
+                    key={product._id}
+                    className="profile-list-item"
+                  >
+                    <div className="profile-list-info">
+                      <strong>
+                        {product.name}
+                      </strong>
+
+                      <span>
+                        Expire le{" "}
+                        {new Date(
+                          product.expirationDate
+                        ).toLocaleDateString(
+                          "fr-FR"
+                        )}{" "}
+                        · Quantité :{" "}
+                        {product.quantity}
+                      </span>
+                    </div>
+
+                    <span className="profile-badge danger">
+                      Expiré
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Utilisateurs */}
+            <div className="section-heading profile-subheading">
+              <h3>Gestion des utilisateurs</h3>
+            </div>
+
+            {users.length === 0 ? (
+              <p className="empty-message">
+                Aucun utilisateur.
+              </p>
+            ) : (
+              <div className="profile-list">
+                {users.map((user) => (
+                  <div
+                    key={user._id}
+                    className="profile-list-item"
+                  >
+                    <div className="profile-list-info">
+                      <strong>
+                        {user.name}
+                      </strong>
+
+                      <span>
+                        {user.email} · {user.role}{" "}
+                        ·{" "}
+                        {user.isActive
+                          ? "Actif"
+                          : "Désactivé"}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      className={
+                        user.isActive
+                          ? "products-btn products-btn-danger"
+                          : "products-btn products-btn-primary"
+                      }
+                      onClick={() =>
+                        handleToggleUser(user._id)
+                      }
+                    >
+                      {user.isActive
+                        ? "Désactiver"
+                        : "Activer"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Catégories */}
+            <div className="section-heading profile-subheading">
+              <h3>Gestion des catégories</h3>
+            </div>
+
+            <div className="profile-categories-controls">
+              <input
+                type="text"
+                value={searchCategory}
+                onChange={(event) =>
+                  setSearchCategory(
+                    event.target.value
+                  )
+                }
+                placeholder="Rechercher une catégorie"
+              />
+
+              <div className="profile-categories-add">
+                <input
+                  type="text"
+                  value={categoryName}
+                  onChange={(event) =>
+                    setCategoryName(
+                      event.target.value
+                    )
+                  }
+                  placeholder="Nom de la catégorie"
+                />
+
+                <button
+                  type="button"
+                  className="products-btn products-btn-primary"
+                  onClick={handleAddCategory}
+                >
+                  Ajouter
+                </button>
+              </div>
+            </div>
+
+            {filteredCategories.length === 0 ? (
+              <p className="empty-message">
+                Aucune catégorie trouvée.
+              </p>
+            ) : (
+              <div className="profile-list">
+                {filteredCategories.map((category) => (
+                  <div
+                    key={category._id}
+                    className="profile-list-item"
+                  >
+                    <div className="profile-list-info">
+                      <strong>
+                        {category.name}
+                      </strong>
+                    </div>
+
+                    <div className="profile-list-actions">
+                      <button
+                        type="button"
+                        className="products-btn"
+                        onClick={() =>
+                          handleEditCategory(
+                            category._id,
+                            category.name
+                          )
+                        }
+                      >
+                        Modifier
+                      </button>
+
+                      <button
+                        type="button"
+                        className="products-btn products-btn-danger"
+                        onClick={() =>
+                          handleDeleteCategory(
+                            category._id
+                          )
+                        }
+                      >
+                        Supprimer
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* Déconnexion */}
+        <button
+          type="button"
+          className="profile-logout-btn"
+          onClick={handleLogout}
+        >
+          Déconnexion
+        </button>
+      </div>
     </div>
   );
 }

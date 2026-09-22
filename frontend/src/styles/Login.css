@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;500;600;700&display=swap');
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inknut Antiqua', Georgia, serif;
+}
+
+.login-page {
+
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+
+  /* Deep navy base with layered "smoke" glow, no external image needed */
+  background-image: url("../assets/télécharger (9).jpg");  
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  padding: 22px 24px 24px;
+  text-align: center;
+
+  /* Rayon d'angle */
+  border-radius: 26px;
+
+  overflow: hidden;
+
+  /* Remplissage: #FFFFFF 19% */
+  background-color: rgba(255, 255, 255, 0.19);
+
+  /* Tracé: #FFFFFF 63% */
+  border: 1px solid rgba(255, 255, 255, 0.63);
+
+  /* Flou de fond uniforme: 25.28 */
+  backdrop-filter: blur(25.28px);
+  -webkit-backdrop-filter: blur(25.28px);
+
+  /* Effets */
+  box-shadow:
+    /* Ombre portée */
+    0 3px 18px 0 rgba(0, 0, 0, 0.25),
+
+    /* Ombre interne 1 */
+    inset 0 0 37px 0 rgba(0, 0, 0, 0.08),
+
+    /* Ombre interne 2 */
+    inset 0 6px 14px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Bruit (noise): taille X1.3 Y1.3, couleur #1565C0 94%, opacité de l'effet 40% */
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset:  0;
+  z-index: 0;
+  pointer-events: none;
+
+  /* Noise: 40% */
+  opacity: 0.40;
+
+  /* Couleur #1565C0 à 94% */
+  background-color: rgba(19, 91, 172, 0.94);
+
+  mix-blend-mode: overlay;
+
+  /* Noise */
+ -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.08' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%5' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='30'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.08' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%5' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  -webkit-mask-size: 130% 130%;
+  mask-size: 130% 130%;
+}
+
+.login-card > * {
+  position: relative;
+  z-index: 2;
+}
+.login-logo {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.login-card h2.Parte-Welcome {
+  margin-top: 0;
+}
+
+/* Logo mark */
+.login-card h1 {
+  margin: 0 auto 8px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: transparent;
+  background: linear-gradient(160deg, #eaf2ff 0%, #7fa8e8 45%, #2b4f8f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(120, 160, 230, 0.45));
+}
+
+/* Title */
+.login-card h2 {
+  margin: 4px 0 32px;
+  font-size: 34px;
+  font-weight: 600;
+  color: #f5f6fa;
+  letter-spacing: 0.3px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+/* Hide the plain-text labels to match the design's placeholder-only look,
+   while keeping them for accessibility */
+.form-group label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 18px 20px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  color: #f2f3f7;
+
+  background: rgba(20, 23, 34, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: rgba(230, 233, 245, 0.65);
+}
+
+.form-group input:focus {
+  border-color: rgba(130, 170, 240, 0.6);
+  box-shadow: 0 0 0 3px rgba(80, 120, 220, 0.18);
+}
+
+/* Error / success messages */
+.error-message {
+  margin: -6px 0 18px;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  color: #ff8a8a;
+}
+
+.success-message {
+  margin: -6px 0 18px;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  color: #7fe0a8;
+}
+
+/* Login button */
+.login-button {
+  width: 100%;
+  padding: 18px;
+  margin-top: 10px;
+
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #f5f7ff;
+
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+
+  background: linear-gradient(180deg, #1c2e5e 0%, #0d1730 100%);
+  box-shadow:
+    0 8px 24px rgba(15, 30, 80, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.login-button:hover {
+  filter: brightness(1.1);
+  box-shadow:
+    0 10px 30px rgba(15, 30, 80, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.login-button:active {
+  transform: translateY(1px);
+}
+
+.login-button:focus-visible {
+  outline: 2px solid rgba(140, 180, 255, 0.8);
+  outline-offset: 3px;
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 36px 24px 32px;
+    border-radius: 22px;
+  }
+  .login-card h2 {
+    font-size: 28px;
+  }
+}

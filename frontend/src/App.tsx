@@ -9,19 +9,28 @@ import EditProduct from "./pages/EditProduct";
 import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
 
+import Layout from "./components/Layout";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Pages without Sidebar */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetails />}/>
-        <Route path="/products/:id/edit"element={<EditProduct />}/>
-        <Route path="/notifications"element={<Notifications />}/>
-        <Route path="/profile" element={<Profile />} /></Routes>
+
+        {/* Pages with Sidebar */}
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/products/:id/edit" element={<EditProduct />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
+
 export default App;
