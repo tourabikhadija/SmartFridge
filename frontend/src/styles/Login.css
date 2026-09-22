@@ -257,3 +257,13 @@ body {
     font-size: 28px;
   }
 }
+
+/* Tablet: slightly reduced sizes and spacing */
+@media (max-width: 768px) {
+  .login-page { padding: 28px 16px; }
+  .login-card { padding: 30px 20px 28px; }
+  .login-logo { width: 150px; height: 150px; }
+  .login-card h2 { font-size: 30px; }
+  .form-group input { padding: 16px 18px; }
+  .login-button { padding: 16px; font-size: 18px; }
+}

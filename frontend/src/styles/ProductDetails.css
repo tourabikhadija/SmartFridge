@@ -378,3 +378,19 @@
     justify-content: center;
   }
 }
+
+/* Tablet */
+@media (max-width: 768px) {
+  .details-grid { gap: 18px; }
+}
+
+/* Mobile: compact, no cut content */
+@media (max-width: 480px) {
+  .product-details-heading h1 { font-size: 26px; }
+  .details-card { padding: 18px; }
+  .details-edit-card { padding: 18px; }
+  .details-item strong { font-size: 14px; }
+  .details-status-card { gap: 16px; }
+  .details-status-icon { width: 48px; height: 48px; font-size: 20px; }
+  .details-consume-row .products-field { min-width: 0; width: 100%; }
+}

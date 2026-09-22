@@ -9,3 +9,15 @@
   min-width: 0;
   min-height: 100vh;
 }
+
+/* Mobile: sidebar becomes a full-width top bar */
+@media (max-width: 480px) {
+  .app-layout {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+}

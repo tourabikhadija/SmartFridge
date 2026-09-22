@@ -113,7 +113,8 @@
   #051A3F 51%,
   #051A3F 92%,
   rgba(7, 27, 77, 0.7) 100%
-)};
+);
+}
 
 /* ================================
    TOPBAR
@@ -590,4 +591,33 @@
   .dashboard-header h1 { font-size: 32px; }
   .stats-grid, .insights-grid, .products-grid, .alerts-grid { grid-template-columns: 1fr; }
   .section-heading { align-items: flex-start; gap: 8px; flex-direction: column; }
+}
+
+/* Tablet: reduce spacing */
+@media (max-width: 768px) {
+  .dashboard { padding: 30px 24px; }
+  .stats-grid { gap: 14px; }
+  .products-grid { gap: 14px; }
+}
+
+/* Mobile: compact, single column */
+@media (max-width: 480px) {
+  .dashboard { padding: 18px 14px; }
+  .dashboard-topbar { gap: 14px; margin-bottom: 24px; }
+  .dashboard-topbar h1 { font-size: 22px; }
+  .dashboard-header h1 { font-size: 26px; }
+  .stat-card { min-height: 0; padding: 16px; gap: 12px; }
+  .stat-icon { width: 40px; height: 40px; font-size: 17px; border-radius: 12px; }
+  .stat-card p { font-size: 24px; }
+  .insight-card { padding: 18px; }
+  .insight-card strong { font-size: 24px; }
+  .alert-section { padding: 18px; }
+  .alert-name { font-size: 14px; }
+  .alert-entry { gap: 10px; }
+  .product-card { padding: 16px; }
+  .product-card h3 { font-size: 16px; }
+  .section-heading h2 { font-size: 18px; }
+  .section-heading span { font-size: 12px; }
+  .category-buttons button { padding: 8px 12px; font-size: 11px; }
+  .empty-message { padding: 22px 16px; }
 }

@@ -328,3 +328,23 @@
     align-items: stretch;
   }
 }
+
+/* Tablet: tighter form grid */
+@media (max-width: 768px) {
+  .products-form-grid { gap: 14px; }
+}
+
+/* Mobile: compact */
+@media (max-width: 480px) {
+  .products-add-card { padding: 16px; }
+  .products-form-title { font-size: 15px; }
+  .products-field input,
+  .products-field select {
+    padding: 12px 13px;
+    font-size: 13px;
+  }
+  .products-btn { padding: 12px 16px; font-size: 13px; }
+  .products-submit { padding: 13px 20px; }
+  .products-filter-select { padding: 12px 13px; font-size: 13px; }
+  .products-scanner { gap: 10px; }
+}
