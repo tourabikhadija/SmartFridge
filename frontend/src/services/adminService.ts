@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:3001/api/admin";
+const API_URL =
+  (import.meta.env.VITE_API_URL || "http://localhost:3001") +
+  "/api/admin";
 
 export type AdminStatistics = {
   totalUsers: number;

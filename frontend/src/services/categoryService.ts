@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:3001/api/categories";
+const API_URL =
+  (import.meta.env.VITE_API_URL || "http://localhost:3001") +
+  "/api/categories";
 
 export type Category = {
   _id: string;

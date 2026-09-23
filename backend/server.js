@@ -32,11 +32,11 @@ app.use("/api/losses", lossRoutes);
 
 connectDB();
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(
-    `Server running on http://localhost:${PORT}`
+    `Server running on port ${PORT} (http://localhost:${PORT})`
   );
 
   // Vérifier les notifications au démarrage

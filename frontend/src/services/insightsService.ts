@@ -1,8 +1,10 @@
 const CONSUMPTION_API_URL =
-  "http://localhost:3001/api/consumptions/monthly";
+  (import.meta.env.VITE_API_URL || "http://localhost:3001") +
+  "/api/consumptions/monthly";
 
 const LOSS_API_URL =
-  "http://localhost:3001/api/losses/monthly";
+  (import.meta.env.VITE_API_URL || "http://localhost:3001") +
+  "/api/losses/monthly";
 
 export const getMonthlyConsumption = async (
   year: number,
