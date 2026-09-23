@@ -8,6 +8,8 @@ import {
   updateProduct,
 } from "../services/productService";
 import { getCategories } from "../services/categoryService";
+import UserBadge from "../components/UserBadge";
+import { getCategoryIcon } from "../utils/categoryIcons";
 import "../styles/Dashboard.css";
 import "../styles/Products.css";
 import "../styles/ProductDetails.css";
@@ -304,6 +306,12 @@ function ProductDetails() {
               </span>
               <h1>{product.name}</h1>
               <p className="product-details-category">
+                <span
+                  className="product-card-icon"
+                  aria-hidden="true"
+                >
+                  {getCategoryIcon(product.category.name)}
+                </span>
                 {product.category.name}
               </p>
             </div>
@@ -316,6 +324,8 @@ function ProductDetails() {
                   : "Expiré"}
             </span>
           </div>
+
+          <UserBadge />
         </header>
 
         {error && <p className="dashboard-error">{error}</p>}

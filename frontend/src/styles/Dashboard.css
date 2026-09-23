@@ -621,3 +621,86 @@
   .category-buttons button { padding: 8px 12px; font-size: 11px; }
   .empty-message { padding: 22px 16px; }
 }
+
+/* ================================
+   HEADER USER BADGE
+=============================== */
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  flex-shrink: 0;
+  border: 1px solid rgba(45, 232, 229, 0.22);
+  border-radius: 999px;
+  background: rgba(45, 232, 229, 0.06);
+}
+
+.user-badge-avatar {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(45, 232, 229, 0.12);
+  color: #2de8e5;
+  font-size: 13px;
+}
+
+.user-badge-name {
+  color: #2de8e5;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ================================
+   CATEGORY ICON
+=============================== */
+
+.category-icon {
+  margin-right: 6px;
+  font-size: 13px;
+}
+
+/* ================================
+   PRODUCT CARD ICON
+=============================== */
+
+.product-card-icon {
+  margin-right: 8px;
+  font-size: 17px;
+  line-height: 1;
+}
+
+/* Mobile: compact badge and icons */
+@media (max-width: 480px) {
+  .user-badge {
+    padding: 6px 11px;
+    gap: 7px;
+  }
+
+  .user-badge-avatar {
+    width: 23px;
+    height: 23px;
+    font-size: 12px;
+  }
+
+  .user-badge-name {
+    font-size: 12px;
+  }
+
+  .product-card-icon {
+    font-size: 16px;
+  }
+}

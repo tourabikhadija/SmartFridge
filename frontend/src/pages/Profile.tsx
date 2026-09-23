@@ -21,6 +21,8 @@ import {
 } from "../services/categoryService";
 
 import type { Category } from "../services/categoryService";
+import UserBadge from "../components/UserBadge";
+import { getCategoryIcon } from "../utils/categoryIcons";
 import "../styles/Dashboard.css";
 import "../styles/Products.css";
 import "../styles/Profile.css";
@@ -294,15 +296,17 @@ function Profile() {
     <div className="dashboard profile-page">
       <div className="profile-container">
         <header className="dashboard-header">
-          <span className="dashboard-label">
-            ROCT
-          </span>
+          <div>
+            <span className="dashboard-label">
+              ROCT
+            </span>
 
-          <h1>Mon profil</h1>
+            <p>
+              Gérez vos informations personnelles
+            </p>
+          </div>
 
-          <p>
-            Gérez vos informations personnelles
-          </p>
+          <UserBadge />
         </header>
 
         {error && (
@@ -626,6 +630,12 @@ function Profile() {
                   >
                     <div className="profile-list-info">
                       <strong>
+                        <span
+                          className="category-icon"
+                          aria-hidden="true"
+                        >
+                          {getCategoryIcon(category.name)}
+                        </span>
                         {category.name}
                       </strong>
                     </div>

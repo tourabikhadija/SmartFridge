@@ -394,3 +394,23 @@
   .details-status-icon { width: 48px; height: 48px; font-size: 20px; }
   .details-consume-row .products-field { min-width: 0; width: 100%; }
 }
+
+/* ================================
+   HEADER USER BADGE
+=============================== */
+
+.product-details-header {
+  position: relative;
+}
+
+.product-details-header .user-badge {
+  position: absolute;
+  top: 52px;
+  right: 0;
+}
+
+@media (max-width: 480px) {
+  .product-details-header .user-badge {
+    top: 48px;
+  }
+}

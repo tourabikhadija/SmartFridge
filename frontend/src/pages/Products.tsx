@@ -9,6 +9,8 @@ import {
 } from "../services/productService";
 
 import { getCategories } from "../services/categoryService";
+import UserBadge from "../components/UserBadge";
+import { getCategoryIcon } from "../utils/categoryIcons";
 import "../styles/Dashboard.css";
 import "../styles/Products.css";
 
@@ -322,12 +324,16 @@ function Products() {
   return (
     <div className="dashboard products-page">
       <header className="dashboard-header">
-        <span className="dashboard-label">SmartFridge</span>
-        <h1>Mes produits</h1>
-        <p>
-          Ajoutez, organisez et suivez les produits de
-          votre réfrigérateur.
-        </p>
+        <div>
+          <span className="dashboard-label">ROCT</span>
+
+          <p>
+            Ajoutez, organisez et suivez les produits de
+            votre réfrigérateur.
+          </p>
+        </div>
+
+        <UserBadge />
       </header>
 
       {error && <p className="dashboard-error">{error}</p>}
@@ -340,7 +346,6 @@ function Products() {
 
       <section className="dashboard-section">
         <div className="section-heading">
-          <h2>Ajouter un produit</h2>
         </div>
 
         <div className="products-add-card">
@@ -461,7 +466,7 @@ function Products() {
                       key={category._id}
                       value={category._id}
                     >
-                      {category.name}
+                      {getCategoryIcon(category.name)} {category.name}
                     </option>
                   ))}
                 </select>
@@ -628,7 +633,15 @@ function Products() {
             {filteredProducts.map((product) => (
               <div className="product-card" key={product._id}>
                 <div className="product-card-header">
-                  <h3>{product.name}</h3>
+                  <h3>
+                    <span
+                      className="product-card-icon"
+                      aria-hidden="true"
+                    >
+                      {getCategoryIcon(product.category.name)}
+                    </span>
+                    {product.name}
+                  </h3>
                   <span className={`status ${product.status}`}>
                     {product.status}
                   </span>

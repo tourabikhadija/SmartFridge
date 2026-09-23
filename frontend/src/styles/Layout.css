@@ -21,3 +21,8 @@
     width: 100%;
   }
 }
+
+/* Dark base behind the sidebar glass */
+.app-layout {
+  background: #020714;
+}

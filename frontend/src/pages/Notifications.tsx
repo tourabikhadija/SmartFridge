@@ -6,6 +6,7 @@ import {
 } from "../services/notificationService";
 
 import type { Notification } from "../services/notificationService";
+import UserBadge from "../components/UserBadge";
 import "../styles/Dashboard.css";
 import "../styles/Notifications.css";
 
@@ -94,16 +95,18 @@ function Notifications() {
     <div className="dashboard notifications-page">
       <div className="notifications-container">
         <header className="dashboard-header">
-          <span className="dashboard-label">
-            ROCT
-          </span>
+          <div>
+            <span className="dashboard-label">
+              ROCT
+            </span>
 
-          <h1>Notifications</h1>
+            <p>
+              Restez informé de l'état de vos
+              produits
+            </p>
+          </div>
 
-          <p>
-            Restez informé de l'état de vos
-            produits
-          </p>
+          <UserBadge />
         </header>
 
         {error && (

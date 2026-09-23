@@ -6,6 +6,9 @@ import {
   getMonthlyConsumption,
   getMonthlyLoss,
 } from "../services/insightsService";
+
+import UserBadge from "../components/UserBadge";
+import { getCategoryIcon } from "../utils/categoryIcons";
 import "../styles/Dashboard.css";
 
 // =========================
@@ -239,8 +242,11 @@ function Dashboard() {
 
     <header className="dashboard-header">
       <div>
-        <span className="dashboard-label">Here's your fridge Overview</span>
+        <span className="dashboard-label">ROCT</span>
+        <p>Here's your fridge Overview</p>
       </div>
+
+      <UserBadge />
     </header>
 
 
@@ -370,8 +376,8 @@ function Dashboard() {
     {/* Monthly Insights */}
     <section className="dashboard-section">
       <div className="section-heading">
-        <h2>Monthly Insights</h2>
-        <span>Ce mois-ci</span>
+        {/* <h2>Monthly Insights</h2>
+        <span>Ce mois-ci</span> */}
       </div>
 
       <div className="insights-grid">
@@ -439,6 +445,12 @@ function Dashboard() {
                 setSelectedCategory(category.name)
               }
             >
+              <span
+                className="category-icon"
+                aria-hidden="true"
+              >
+                {getCategoryIcon(category.name)}
+              </span>
               {category.name}
             </button>
           ))}
@@ -455,7 +467,15 @@ function Dashboard() {
             <div className="product-card" key={product._id}>
 
               <div className="product-card-header">
-                <h3>{product.name}</h3>
+                <h3>
+                  <span
+                    className="product-card-icon"
+                    aria-hidden="true"
+                  >
+                    {getCategoryIcon(product.category.name)}
+                  </span>
+                  {product.name}
+                </h3>
                 <span className={`status ${product.status}`}>
                   {product.status}
                 </span>
