@@ -1,0 +1,60 @@
+@startuml
+
+class Utilisateur {
+  +id: ObjectId
+  +name: String
+  +email: String
+  +password: String
+  +role: String
+}
+
+class Produit {
+  +id: ObjectId
+  +name: String
+  +quantity: Number
+  +initialQuantity: Number
+  +unit: String
+  +purchaseDate: Date
+  +expirationDate: Date
+  +expirationAlertDays: Number
+  +status: String
+  +price: Number
+}
+
+class Categorie {
+  +id: ObjectId
+  +name: String
+  +description: String
+}
+
+class Notification {
+  +id: ObjectId
+  +message: String
+  +dateNotification: Date
+  +typeNotification: String
+  +lu: Boolean
+}
+
+class Consommation {
+  +id: ObjectId
+  +quantity: Number
+  +date: Date
+  +action: String
+}
+
+class Perte {
+  +id: ObjectId
+  +quantity: Number
+  +date: Date
+  +reason: String
+}
+
+Utilisateur "1" -- "0..*" Produit : possède
+Utilisateur "1" -- "0..*" Categorie : crée
+Categorie "1" -- "0..*" Produit : contient
+Utilisateur "1" -- "0..*" Notification : reçoit
+
+Produit "1" -- "0..*" Consommation : possède
+Produit "1" -- "0..*" Perte : génère
+
+@enduml

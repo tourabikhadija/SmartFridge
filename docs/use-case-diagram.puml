@@ -1,0 +1,34 @@
+@startuml
+
+left to right direction
+
+actor "Utilisateur" as User
+actor "Administrateur" as Admin
+
+rectangle "SmartFridge / ROCT" {
+
+  (Créer un compte) as A
+  (Se connecter) as B
+  (Gérer ses produits) as C
+  (Consulter l'état du stock) as D
+  (Recevoir des notifications) as E
+  (Consulter les statistiques) as F
+
+  (Gérer les catégories) as G
+  (Consulter les statistiques générales) as H
+  (Superviser la plateforme) as I
+}
+
+User --> A
+User --> B
+User --> C
+User --> D
+User --> E
+User --> F
+
+Admin --> B
+Admin --> G
+Admin --> H
+Admin --> I
+
+@enduml
