@@ -97,6 +97,8 @@ const createProduct = async (req, res) => {
      user: req.user.id,
     });
 
+    await product.populate("category", "name");
+
     const today = new Date();
     const expirationDate = new Date(product.expirationDate);
 

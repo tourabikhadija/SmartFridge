@@ -21,7 +21,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 export const getCategoryIcon = (
   categoryName: string
 ): string => {
-  const key = categoryName.trim().toLowerCase();
+  const key = (categoryName ?? "").trim().toLowerCase();
 
   return CATEGORY_ICONS[key] || "📦";
 };
